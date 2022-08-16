@@ -4,11 +4,15 @@ const promesa = document.getElementById("promesa")
 const asyncawait = document.getElementById("asyncawait")
 
 const saludar = (name) => {
-    let response = null
+    return new Promise ((resolve, reject) => {
     setTimeout(() => {
-        response = `Hola ${name}`
+        if (name === "") {
+            reject("El nombre no puede estar vacío")
+        } else {
+            resolve(`Hola ${name}`)
+        }
     }, 2000)
-    return response
+    })
 }
 
 const write = (data) => {
@@ -23,9 +27,20 @@ normal.addEventListener("click", () => {
 })
 
 promesa.addEventListener("click", () => {
-
+    console.log("Empieza el proceso")
+    saludar("EDteam")
+    .then(response => write(response))
+    .catch(error => console.log(error))
+    console.log("Termina el proceso")
 })
 
-asyncawait.addEventListener("click", () => {
-
+asyncawait.addEventListener("click", async () => {
+    console.log("Empieza el proceso")
+    try {
+    const resp = await saludar("EDteam")
+    write(resp)
+    } catch (error) {
+        console.log(error)
+    }
+    console.log("Termina el proceso")
 })
