@@ -54,12 +54,13 @@ asyncawait.addEventListener("click", async () => {
 // })
 
 btnfetch.addEventListener("click", async () => {
-    fetch("http://localhost:3000/posts")
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(err => console.log(err))
     try{
         const response = await fetch("http://localhost:3000/posts")
+        if (response.status !== 200){
+            const message = await response.text()
+            console.log("Ops, Parece que algo salió mal: ", message)
+            return
+        }
         const data = await response.json()
         console.log(data)
     } catch (err){
