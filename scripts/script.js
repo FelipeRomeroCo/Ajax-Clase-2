@@ -4,6 +4,12 @@ const promesa = document.getElementById("promesa")
 const asyncawait = document.getElementById("asyncawait")
 const btnfetch = document.getElementById("btnfetch")
 
+const myForm = document.getElementById("myForm")
+const title = document.getElementById("title")
+const author = document.getElementById("author")
+const btnCreate = document.getElementById("btnCreate")
+
+
 const saludar = (name) => {
     return new Promise ((resolve, reject) => {
     setTimeout(() => {
@@ -65,5 +71,36 @@ btnfetch.addEventListener("click", async () => {
         console.log(data)
     } catch (err){
         console.log(err)
+    }
+})
+
+myForm.addEventListener("submit", e => {
+    e.preventDefault()
+})
+
+btnCreate.addEventListener("click", async () =>{
+    const post ={
+        title: title.value,
+        author: author.value
+    }
+
+    const myHeaders = new Headers()
+    myHeaders.append('Content-Type', 'application/json')
+    myHeaders.append("Authorization", "el-token-super-seguro")
+
+    const myInit = {
+        method: "POST",
+        body: JSON.stringify(post)
+    }
+    try {
+        const response = await fetch("http://localhost:3000/posts", myInit)
+        if (response.status !== 201){
+            console.log("No se pudo crear el recurso")
+            return
+        }
+        const data = await response.json()
+        console.log("Recurso creado correctamente", data)
+    } catch (err){
+        console.log(`Hubo un error: ${err}`)
     }
 })
